@@ -1,0 +1,10 @@
+{
+	"name": "Pinky",
+	"version": "0.1.0",
+	"devDependencies": {
+		"promises-aplus-tests": "*"
+	},
+	"scripts": {
+		"test": "promises-aplus-tests test/pinky-adapter"
+	}
+}

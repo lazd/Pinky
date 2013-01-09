@@ -156,7 +156,7 @@ function isValid(value) { return !(value > 0.5); }
 // Call our asynchronous random number fetcher
 fetchRandom().then(
 	function(value) {
-		// In this onFulfilled handler, if the value is valid, fulfill the next promise by returning the value
+		// In this onFulfilled handler, if the value is valid, fulfill the next promise by returning it
 		// Or, if the value isn't valid, we'll reject the next promise by throwing an error
 		if (!isValid(value)) {
 			// Reject the next promise by throwing because the random number is too big

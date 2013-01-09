@@ -8,29 +8,38 @@ Pinky is written to be very readable and easy to follow, with references to the 
 
 Pinky includes a number of fully documented examples that illustrate common use cases, explain exactly what's going on, and highlight the power of promises. Several included examples can be used as independent explanations of the functionality promises can provide without any prior introduction to the concept.
 
+
 # API
 
 Create a new Pinky instance with `var pinky = new Pinky()`.
 
+
 ## Methods
 
 **pinky.fulfill(** *value* **)**
+
 When passed a value, the promise will be fulfilled. All onFulfilled callbacks will receive the passed value as their first argument.
 
 **pinky.reject(** *reason* **)**
+
 When passed a reason, the promise will be rejected. All onRejected callbacks will receive the passed error as their first argument.
 
 **pinky.then(** *onFulfilled*, *onRejected* **)**
+
 Used to add onFulfilled and onRejected callbacks to the promise. The same method is provided as `pinky.promise.then(...)`.
+
 
 ## Properties
 
 **pinky.promise**
+
 The `pinky.promise` property is a "thenable" object that should be returned by functions that use Pinky. Instead of returning the Pinky instance itself, which would allow callers to fulfill/reject the promise, your function should `return pinky.promise` -- an object that includes the one method a promise must have: `pinky.then(...)`.
+
 
 # Usage
 
 Pinky can be used both on the server and the client.
+
 
 ## NodeJS
 
@@ -52,6 +61,7 @@ Use promises in your code:
 var promise = pinky.promise();
 ```
 
+
 ## Browser
 
 First, include [`pinky.js`][Pinky JS] on your page:
@@ -68,11 +78,13 @@ Then, use it in your code:
 </script>
 ```
 
+
 # Examples
 
 Examples for NodeJS and the browser are available in the examples/ folder. 
 
 Some of the examples located in examples/browser/ fetch files with XMLHttpRequest, and most browsers prevent local files from being fetched in this way. There are a [number of different ways][Run examples locally] to run examples locally, the most straightforward of which is to run `python -m SimpleHTTPServer` or `python -m http.server` and navigate to http://127.0.0.1:8000.
+
 
 ### A complete example: fetching a value and handling errors
 The example below simulates an asynchronous fetch of a random value with error handling and validation.
@@ -83,6 +95,7 @@ This example has the following possible outcomes:
 2. **Rejected**: The fetch timed out and the generated backup value is invalid.
 3. **Fulfilled**: The fetch timed out or the fetched value is invalid, but the generated value is valid.
 4. **Rejected**: The fetch timed out or the fetched value is invalid, and generated value is invalid.
+
 
 ### fetchRandom(): a function that returns a promise
 
@@ -122,6 +135,7 @@ function fetchRandom() {
 	return pinky.promise;
 }
 ```
+
 
 ### How to *then()*: using the promise returned by fetchRandom()
 
@@ -190,6 +204,7 @@ fetchRandom().then(
 );
 ```
 
+
 # Testing
 
 Execute the following commands to run the [Promises/A+ test suite][A+ tests]:
@@ -198,6 +213,7 @@ Execute the following commands to run the [Promises/A+ test suite][A+ tests]:
 npm install
 npm test
 ```
+
 
 # License
 

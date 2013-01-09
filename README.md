@@ -78,9 +78,7 @@ The `fetchRandom()` function simulates an asynchronous fetch and returns a promi
 * Will be rejected if the "request" times out
 * Will be fulfilled with the "response" if it comes back in time
 
-
-Source:
-
+```javascript
 	/**
 		Simulate fetching a random number from a remote source
 		Time out if the pretend remote source responds too slowly
@@ -111,6 +109,7 @@ Source:
 		// Return the promise, which has a single method: then()
 		return pinky.promise;
 	}
+```
 
 ### How to *then()*: using the promise returned by fetchRandom()
 
@@ -119,6 +118,7 @@ Source:
 2. With the second `then()` call (on the promise returned by the first `then()` call), we'll let the fulfillment value bubble to the next promise's onFulfilled handler, or we'll handle invalid value exception by attempting to generate a valid value locally, returning it if we're successful, or throwing another exception if we're not.
 3. With the third `then()` call (on the promise returned by the second `then()` call), we'll print the fulfillment value and its source, or we'll print an error indicating we were unable to get a valid value.
 
+```javascript
 	// A value is "valid" if it is not greater than 0.5
 	function isValid(value) { return !(value > 0.5); }
 
@@ -176,7 +176,7 @@ Source:
 			console.error('Rejected: '+reason, reason.value, '\n');
 		}
 	);
-
+```
 
 # Testing
 

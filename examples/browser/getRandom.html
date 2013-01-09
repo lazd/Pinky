@@ -115,7 +115,7 @@
 					target.innerHTML = 'Fulfilled: '+result.method+' value is valid: '+result.value;
 				},
 				function(reason) {
-					target.innerHTML = 'Rejected: '+reason, reason.value;
+					target.innerHTML = 'Rejected: '+reason;
 				}
 			);
 		}
@@ -253,7 +253,7 @@ function doFetch(targetId) {
 			target.innerHTML = 'Fulfilled: '+result.method+' value is valid: '+result.value;
 		},
 		function(reason) {
-			target.innerHTML = 'Rejected: '+reason, reason.value;
+			target.innerHTML = 'Rejected: '+reason;
 		}
 	);
 }

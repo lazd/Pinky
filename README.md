@@ -1,5 +1,7 @@
 # Pinky
 
+<img src="http://70.166.17.76/~lazdnet/pinky_logo_small.png" align="right" alt="Pinky logo">
+
 Pinky is an extremely tiny [Promises/A+][A+ spec] implementation that passes the [Promises/A+ test suite][A+ tests].
 
 Pinky is written to be very readable and easy to follow, with references to the relevant sections of the spec for each operation. As such, Pinky can be used as an academic example of a promises implementation.
@@ -34,27 +36,37 @@ Pinky can be used both on the server and the client.
 
 First, install the Pinky module using `npm`. Optionally use `--save` to save Pinky as a dependency in your `package.json`:
 
-    npm install pinky --save
-	
+```
+npm install pinky --save
+```
+
 Require Pinky:
 
-	const pinky = require('pinky');
+```javascript
+const pinky = require('pinky');
+```
 
 Use promises in your code:
 
-	var promise = pinky.promise();
+```javascript
+var promise = pinky.promise();
+```
 
 ## Browser
 
 First, include [`pinky.js`][Pinky JS] on your page:
 
-	<script src="pinky.js"></script>
+```html
+<script src="pinky.js"></script>
+```
 
 Then, use it in your code:
 
-	<script>
-		var promise = pinky.promise();
-	</script>
+```html
+<script>
+	var promise = pinky.promise();
+</script>
+```
 
 # Examples
 
@@ -79,36 +91,36 @@ The `fetchRandom()` function simulates an asynchronous fetch and returns a promi
 * Will be fulfilled with the "response" if it comes back in time
 
 ```javascript
-	/**
-		Simulate fetching a random number from a remote source
-		Time out if the pretend remote source responds too slowly
-	*/
-	function fetchRandom() {
-		// Create a Pinky instance
-		var pinky = new Pinky();
+/**
+	Simulate fetching a random number from a remote source
+	Time out if the pretend remote source responds too slowly
+*/
+function fetchRandom() {
+	// Create a Pinky instance
+	var pinky = new Pinky();
+
+	// Let's pretend we're fetching the random number from a remote source
+	// Randomly choose a "response time" between 0 and 100 milliseconds
+	var responseTime = Math.random()*100;
+
+	// We'll timeout if the source takes too long and reject the promise
+	var timeoutTime = 50;
+	var timeout = setTimeout(function() {
+		pinky.reject(new Error('Request timed out'));
+	}, timeoutTime);
+
+	// Simulate an asynchronous fetch using setTimeout
+	setTimeout(function() {
+		// The response came back in time, clear our timeout
+		clearTimeout(timeout);
 	
-		// Let's pretend we're fetching the random number from a remote source
-		// Randomly choose a "response time" between 0 and 100 milliseconds
-		var responseTime = Math.random()*100;
-	
-		// We'll timeout if the source takes too long and reject the promise
-		var timeoutTime = 50;
-		var timeout = setTimeout(function() {
-			pinky.reject(new Error('Request timed out'));
-		}, timeoutTime);
-	
-		// Simulate an asynchronous fetch using setTimeout
-		setTimeout(function() {
-			// The response came back in time, clear our timeout
-			clearTimeout(timeout);
-		
-			// Fulfill the promise with a random number when our pretend source responds
-			pinky.fulfill(Math.random());
-		}, responseTime);
-	
-		// Return the promise, which has a single method: then()
-		return pinky.promise;
-	}
+		// Fulfill the promise with a random number when our pretend source responds
+		pinky.fulfill(Math.random());
+	}, responseTime);
+
+	// Return the promise, which has a single method: then()
+	return pinky.promise;
+}
 ```
 
 ### How to *then()*: using the promise returned by fetchRandom()
@@ -119,72 +131,73 @@ The `fetchRandom()` function simulates an asynchronous fetch and returns a promi
 3. With the third `then()` call (on the promise returned by the second `then()` call), we'll print the fulfillment value and its source, or we'll print an error indicating we were unable to get a valid value.
 
 ```javascript
-	// A value is "valid" if it is not greater than 0.5
-	function isValid(value) { return !(value > 0.5); }
+// A value is "valid" if it is not greater than 0.5
+function isValid(value) { return !(value > 0.5); }
 
-	// Call our asynchronous random number fetcher
-	fetchRandom().then(
-		function(value) {
-			// In this onFulfilled handler, if the value is valid, we'll fulfill the next promise by returning the value
-			// Or, if the value isn't valid, we'll reject the next promise by throwing an error
-			if (!isValid(value)) {
-				// Reject the next promise by throwing because the random number is too big
-				var reason = new Error('Fetched value is invalid');
-				reason.value = value;
-				throw reason;
-			}
-		
-			// Fulfill the next promise by returning if the value is small enough
-			return {
-				method: 'fetched',
-				value: value
-			};
-		},
-		null // Let the rejection reason bubble to the next promise's onRejected handler
-	)
-	.then(
-		null, // Let the fulfillment value bubble to the next promise's onFulfilled handler
+// Call our asynchronous random number fetcher
+fetchRandom().then(
+	function(value) {
+		// In this onFulfilled handler, if the value is valid, we'll fulfill the next promise by returning the value
+		// Or, if the value isn't valid, we'll reject the next promise by throwing an error
+		if (!isValid(value)) {
+			// Reject the next promise by throwing because the random number is too big
+			var reason = new Error('Fetched value is invalid');
+			reason.value = value;
+			throw reason;
+		}
 	
-		function(reason) {
-			// In this onRejected handler, if we return a value, the next promise will be fulfilled
-			// Or, if we throw/re-throw, the next promise will be rejected
-		
-			// Fall back to generating a random number locally
-			var newValue = Math.random();
-			if (isValid(newValue)) {
-				// Fulfill the next promise if our locally generated value is valid
-				return {
-					method: 'generated', 
-					value: newValue
-				};
-			}
-		
-			// Throw a new error, including the message from the previously thrown error
-			var newReason = new Error(reason.message+' and generated value is invalid');
-			newReason.value = {
-				fetched: reason.value,
-				generated: newValue
+		// Fulfill the next promise by returning if the value is small enough
+		return {
+			method: 'fetched',
+			value: value
+		};
+	},
+	null // Let the rejection reason bubble to the next promise's onRejected handler
+)
+.then(
+	null, // Let the fulfillment value bubble to the next promise's onFulfilled handler
+
+	function(reason) {
+		// In this onRejected handler, if we return a value, the next promise will be fulfilled
+		// Or, if we throw/re-throw, the next promise will be rejected
+	
+		// Fall back to generating a random number locally
+		var newValue = Math.random();
+		if (isValid(newValue)) {
+			// Fulfill the next promise if our locally generated value is valid
+			return {
+				method: 'generated', 
+				value: newValue
 			};
-			throw newReason;
 		}
-	)
-	.then(
-		function(result) {
-			console.log('Fulfilled: '+result.method+' value is valid: '+result.value, '\n');
-		},
-		function(reason) {
-			console.error('Rejected: '+reason, reason.value, '\n');
-		}
-	);
+	
+		// Throw a new error, including the message from the previously thrown error
+		var newReason = new Error(reason.message+' and generated value is invalid');
+		newReason.value = {
+			fetched: reason.value,
+			generated: newValue
+		};
+		throw newReason;
+	}
+)
+.then(
+	function(result) {
+		console.log('Fulfilled: '+result.method+' value is valid: '+result.value, '\n');
+	},
+	function(reason) {
+		console.error('Rejected: '+reason, reason.value, '\n');
+	}
+);
 ```
 
 # Testing
 
 Execute the following commands to run the [Promises/A+ test suite][A+ tests]:
 
-	npm install
-	npm test
-
+```
+npm install
+npm test
+```
 
 # License
 

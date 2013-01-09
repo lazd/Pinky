@@ -49,16 +49,18 @@ First, install the Pinky module using `npm`. Optionally use `--save` to save Pin
 npm install pinky --save
 ```
 
-Require Pinky:
+Next, require Pinky:
 
 ```javascript
 const pinky = require('pinky');
 ```
 
-Use promises in your code:
+Then, use promises in your code:
 
 ```javascript
-var promise = pinky.promise();
+var pinky = new Pinky();
+pinky.promise.then(function(value) { console.log('Hello '+value); });
+pinky.fulfill('world');
 ```
 
 
@@ -74,16 +76,18 @@ Then, use it in your code:
 
 ```html
 <script>
-	var promise = pinky.promise();
+	var pinky = new Pinky();
+	pinky.promise.then(function(value) { alert('Hello '+value); });
+	pinky.fulfill('world');
 </script>
 ```
 
 
 # Examples
 
-Examples for NodeJS and the browser are available in the examples/ folder. 
+Examples for NodeJS and the browser are available in the `examples/` folder.
 
-Some of the examples located in examples/browser/ fetch files with XMLHttpRequest, and most browsers prevent local files from being fetched in this way. There are a [number of different ways][Run examples locally] to run examples locally, the most straightforward of which is to run `python -m SimpleHTTPServer` or `python -m http.server` and navigate to http://127.0.0.1:8000.
+Some of the examples located in `examples/browser/` fetch files with XMLHttpRequest, and most browsers prevent local files from being fetched in this way. There are a [number of different ways][Run examples locally] to run examples locally, the most straightforward of which is to run `python -m SimpleHTTPServer` or `python -m http.server` and navigate to http://127.0.0.1:8000.
 
 
 ### A complete example: fetching a value and handling errors
@@ -140,6 +144,7 @@ function fetchRandom() {
 ### How to *then()*: using the promise returned by fetchRandom()
 
 `fetchRandom()` is called and 3 chained `then()` calls are made, each of which returns a new promise:
+
 1. With the first call to `then()` (on the promise returned by `fetchRandom()`), we'll pass the fulfillment value on if it's "valid" (not greater than 0.5), or let the timeout exception bubble to the next promise's onRejected handler.
 2. With the second `then()` call (on the promise returned by the first `then()` call), we'll let the fulfillment value bubble to the next promise's onFulfilled handler, or we'll handle invalid value exception by attempting to generate a valid value locally, returning it if we're successful, or throwing another exception if we're not.
 3. With the third `then()` call (on the promise returned by the second `then()` call), we'll print the fulfillment value and its source, or we'll print an error indicating we were unable to get a valid value.

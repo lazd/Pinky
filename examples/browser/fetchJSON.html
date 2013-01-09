@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+<head>
+	<title>Pinky example: Fetch and Parse JSON</title>
+	
+	<!-- Google Code Prettify -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+	
+	<style>
+		body, textarea {
+			font-family: Helvetica;
+		}
+		textarea {
+			margin-left: 40px;
+			font-size: 14px;
+		}
+		.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun{color:#660}.pln{color:#000}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec{color:#606}pre.prettyprint{padding:2px;border:1px solid #888}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}@media print{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun{color:#440}.pln{color:#000}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}
+	</style>
+	
+	<!-- Include pinky.js -->
+	<script src="../../pinky.js"></script>
+	
+	<!-- Our functions that use promises -->
+	<script>
+		/**
+			An XMLHttpRequest wrapper that returns a promise
+		*/
+		function fetch(url) {
+			// Make a new promise
+			var pinky = new Pinky();
+
+			// Create a request
+			var request = new XMLHttpRequest();
+			request.open("GET", url, true);
+
+			// Handle successful requests
+			request.onload = function() {
+				if (request.status === 200 || request.status === 0) {
+					// Fulfill the promise with the fetched data
+					pinky.fulfill(request.responseText);
+				}
+				else {
+					// Reject the promise if the status is not 200 (OK from server) or 0 (local files)
+					pinky.reject(
+						'Fetch failed: '+
+						url+' was requested, '+
+						'but the server returned code '+request.status+' ('+request.statusText+') '+
+						'and responded with: \n\n'+request.responseText
+					);
+				}
+			};
+
+			// Handle failed requests
+			request.onerror = function() {
+				// Reject the promise if the request failed
+				pinky.reject('Fetch failed: '+url+' could not be fetched');
+			};
+
+			// Send the request
+			request.send();
+
+			return pinky.promise;
+		};
+
+		/**
+			A function that populates a element with the content of the body field of the JSON at the provided URL
+		*/
+		function setContentFromJSON(id, url) {
+			fetch(url) // fetch() returns a promise, which we'll chain function calls to below
+			
+			.then( // add callbacks to the promise returned by fetch()
+				function(value) { // onFulfilled callback: called when the response is returned
+					return JSON.parse(value); // will throw an exception if JSON fails to parse
+				},
+				function(reason) { // onRejected callback: called when the request fails
+					document.getElementById(id).innerHTML = reason;
+				}
+			) // then() returns another promise
+			
+			.then( // add callbacks to the promise returned by the first call to then()
+				function(value) { // onFulfilled callback: called when the JSON is parsed successfully
+					document.getElementById(id).innerHTML = 'JSON content: '+value.content;
+				},
+				function(reason) { // onRejected callback: called when the the first onFulfilled callback throws a JSON parse exception
+					document.getElementById(id).innerHTML = 'JSON parse failed: '+reason;
+				}
+			);
+		}
+	</script>
+</head>
+<body onload="prettyPrint()">
+	<h2>Pinky example: Fetch and Parse JSON</h3>
+	<p>Click a button below to send an asynchronous request to the server that will be handled using two Pinky promises.</p>
+
+	<!--
+		Note: Do not use the onclick attribute, it is bad practice. It is only used in this demo for brevity and to avoid including unrelated JavaScript code.
+	-->
+	<button onclick="setContentFromJSON('target', '../data/data.valid.json');">Request valid JSON</button>
+	<button onclick="setContentFromJSON('target', '../data/data.invalid.json');">Request invalid JSON</button>
+	<button onclick="setContentFromJSON('target', '../data/data.doesNotExist.json');">Request non-existent JSON</button>
+	<button onclick="setContentFromJSON('target', 'http://0.0.0.0:0000/data.json');">Request from non-existent server</button>
+	
+	<h3>Response:</h3>
+	<textarea id="target" style="width: 600px; height: 250px"></textarea>
+	
+	<h3>Explanation:</h3>
+	<ol>
+		<li>The first promise, created inside of fetch(), handles the request itself, and will be fulfilled if data is fetched from the server or rejected if the data could not be fetched.
+			<pre class="prettyprint">
+/**
+	An XMLHttpRequest wrapper that returns a promise
+*/
+function fetch(url) {
+	// Make a new promise
+	var promise = pinky.promise();
+
+	// Create a request
+	var request = new XMLHttpRequest();
+	request.open("GET", url, true);
+
+	// Handle successful requests
+	request.onload = function() {
+		if (request.status === 200 || request.status === 0) {
+			// Fulfill the promise with the fetched data
+			promise.fulfill(request.responseText);
+		}
+		else {
+			// Reject the promise if the status is not 200 (OK from server) or 0 (local files)
+			promise.reject(
+				'Fetch failed: '+
+				url+' was requested, '+
+				'but the server returned code '+request.status+' ('+request.statusText+') '+
+				'and responded with: \n\n'+request.responseText
+			);
+		}
+	};
+
+	// Handle failed requests
+	request.onerror = function() {
+		// Reject the promise if the request failed
+		promise.reject('Fetch failed: '+url+' could not be fetched');
+	};
+
+	// Send the request
+	request.send();
+
+	return promise;
+};
+</pre>
+		</li>
+		<li>The second promise, created automatically by the second call to then(), handles the parsing of the fetched data, and will be fulfilled if the data is valid JSON or rejected if the data fails to parse as JSON.
+			
+			<pre class="prettyprint">
+/**
+	A function that populates a element with the content of the body field of the JSON at the provided URL
+*/
+function setContentFromJSON(id, url) {
+	fetch(url) // fetch() returns a promise, which we'll chain function calls to below
+
+	.then( // add callbacks to the promise returned by fetch()
+		function(value) { // onFulfilled callback: executed when the response is returned
+			return JSON.parse(value); // will throw an exception if JSON fails to parse
+		},
+		function(reason) { // onRejected callback: executed when the request fails
+			document.getElementById(id).innerHTML = reason;
+		}
+	) // then() returns another promise
+
+	.then( // add callbacks to the promise returned by the first call to then()
+		function(value) { // onFulfilled callback: executed when the JSON is parsed successfully
+			document.getElementById(id).innerHTML = 'JSON content: '+value.content;
+		},	
+		function(reason) { // onRejected callback: called when the the first onFulfilled callback throws a JSON parse exception
+			document.getElementById(id).innerHTML = 'JSON parse failed: '+reason;
+		}
+	);
+}
+</pre>
+		</li>
+	</ol>
+	
+</body>
+</html>

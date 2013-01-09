@@ -12,13 +12,13 @@ Create a new Pinky instance with `var pinky = new Pinky()`.
 
 ## Methods
 
-**pinky.fulfill(***value***)**
+**pinky.fulfill(** *value* **)**
 When passed a value, the promise will be fulfilled. All onFulfilled callbacks will receive the passed value as their first argument.
 
-**pinky.reject(***reason***)**
+**pinky.reject(** *reason* **)**
 When passed a reason, the promise will be rejected. All onRejected callbacks will receive the passed error as their first argument.
 
-**pinky.then(***onFulfilled*, *onRejected***)**
+**pinky.then(** *onFulfilled*, *onRejected* **)**
 Used to add onFulfilled and onRejected callbacks to the promise. The same method is provided as `pinky.promise.then(...)`.
 
 ## Properties
@@ -66,6 +66,7 @@ Some of the examples located in examples/browser/ fetch files with XMLHttpReques
 The example below simulates an asynchronous fetch of a random value with error handling and validation.
 
 This example has the following possible outcomes:
+
 1. **Fulfilled**: The fetched value is valid.
 2. **Rejected**: The fetch timed out and the generated backup value is invalid.
 3. **Fulfilled**: The fetch timed out or the fetched value is invalid, but the generated value is valid.
@@ -76,6 +77,9 @@ This example has the following possible outcomes:
 The `fetchRandom()` function simulates an asynchronous fetch and returns a promise that:
 * Will be rejected if the "request" times out
 * Will be fulfilled with the "response" if it comes back in time
+
+
+Source:
 
 	/**
 		Simulate fetching a random number from a remote source

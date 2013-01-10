@@ -1,6 +1,6 @@
 # Pinky
 
-<img src="//lazd.github.com/Pinky/images/pinky_logo_small.png" align="right" alt="Pinky logo">
+<img src="http://lazd.github.com/Pinky/images/pinky_logo_small.png" align="right" alt="Pinky logo">
 
 Pinky is an extremely tiny [Promises/A+][A+ spec] implementation that passes the [Promises/A+ test suite][A+ tests].
 

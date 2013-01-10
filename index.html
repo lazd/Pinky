@@ -176,7 +176,7 @@
 <span class="c1">// Call our asynchronous random number fetcher</span>
 <span class="nx">fetchRandom</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span>
     <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// In this onFulfilled handler, if the value is valid, fulfill the next promise by returning it</span>
+        <span class="c1">// If the value is valid, fulfill the next promise by returning it</span>
         <span class="c1">// Or, if the value isn't valid, we'll reject the next promise by throwing an error</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isValid</span><span class="p">(</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
             <span class="c1">// Reject the next promise by throwing because the random number is too big</span>
@@ -197,7 +197,7 @@
     <span class="kc">null</span><span class="p">,</span> <span class="c1">// Let the fulfillment value bubble to the next promise's onFulfilled handler</span>
 
     <span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// In this onRejected handler, if we return a value, the next promise will be fulfilled</span>
+        <span class="c1">// If we return a value, the next promise is fulfilled</span>
         <span class="c1">// Or, if we throw/re-throw, the next promise will be rejected</span>
 
         <span class="c1">// Fall back to generating a random number locally</span>
@@ -220,10 +220,10 @@
     <span class="p">}</span>
 <span class="p">)</span>
 <span class="p">.</span><span class="nx">then</span><span class="p">(</span>
-    <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// In this onFulfilled handler, we'll dump the value and how we got it</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Dump the value and how we got it</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Fulfilled: '</span><span class="o">+</span><span class="nx">result</span><span class="p">.</span><span class="nx">method</span><span class="o">+</span><span class="s1">' value is valid: '</span><span class="o">+</span><span class="nx">result</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="s1">'\n'</span><span class="p">);</span>
     <span class="p">},</span>
-    <span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// In this onRejected handler, we'll dump the reason the operation failed</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Dump the reason the operation failed</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'Rejected: '</span><span class="o">+</span><span class="nx">reason</span><span class="p">,</span> <span class="nx">reason</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="s1">'\n'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">);</span>

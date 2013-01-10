@@ -119,6 +119,7 @@ a.button {
 	line-height: 25px;
 	font-weight: bold;
 	font-size: 15px;
+	text-align: left;
 	padding: 12px 8px 12px 8px;
 	display: inline-block;
 	width: 179px;
@@ -156,6 +157,9 @@ a.button span {
 	height: 23px;
 }
 
+#download-js span {
+	background: transparent url(../images/js-icon.png) 12px 50% no-repeat;
+}
 #download-zip span {
 	background: transparent url(../images/zip-icon.png) 12px 50% no-repeat;
 }

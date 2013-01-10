@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Pinky by lazd</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Pinky</h1>
+          <h2> Pinky is an extremely tiny Promises/A+ implementation that passes the Promises/A+ test suite</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/lazd/Pinky/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/lazd/Pinky/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/lazd/Pinky" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>Pinky</h1>
+
+<p><img src="http://70.166.17.76/~lazdnet/pinky_logo_small.png" align="right" alt="Pinky logo"></p>
+
+<p>Pinky is an extremely tiny <a href="http://promises-aplus.github.com/promises-spec/">Promises/A+</a> implementation that passes the <a href="https://github.com/promises-aplus/promises-tests">Promises/A+ test suite</a>.</p>
+
+<p>Pinky is written to be very readable and easy to follow, with references to the relevant sections of the spec for each operation. As such, Pinky can be used as an academic example of a promises implementation.</p>
+
+<p>Pinky includes a number of fully documented examples that illustrate common use cases, explain exactly what's going on, and highlight the power of promises. Several included examples can be used as independent explanations of the functionality promises can provide without any prior introduction to the concept.</p>
+
+<h1>API</h1>
+
+<p>Create a new Pinky instance with <code>var pinky = new Pinky()</code>.</p>
+
+<h2>Methods</h2>
+
+<p><strong>pinky.fulfill(</strong> <em>value</em> <strong>)</strong></p>
+
+<p>When passed a value, the promise will be fulfilled. All onFulfilled callbacks will receive the passed value as their first argument.</p>
+
+<p><strong>pinky.reject(</strong> <em>reason</em> <strong>)</strong></p>
+
+<p>When passed a reason, the promise will be rejected. All onRejected callbacks will receive the passed error as their first argument.</p>
+
+<p><strong>pinky.then(</strong> <em>onFulfilled</em>, <em>onRejected</em> <strong>)</strong></p>
+
+<p>Used to add onFulfilled and onRejected callbacks to the promise. The same method is provided as <code>pinky.promise.then(...)</code>.</p>
+
+<h2>Properties</h2>
+
+<p><strong>pinky.promise</strong></p>
+
+<p>The <code>pinky.promise</code> property is a "thenable" object that should be returned by functions that use Pinky. Instead of returning the Pinky instance itself, which would allow callers to fulfill/reject the promise, your function should <code>return pinky.promise</code> -- an object that includes the one method a promise must have: <code>pinky.then(...)</code>.</p>
+
+<h1>Usage</h1>
+
+<p>Pinky can be used both on the server and the client.</p>
+
+<h2>NodeJS</h2>
+
+<p>First, install the Pinky module using <code>npm</code>. Optionally use <code>--save</code> to save Pinky as a dependency in your <code>package.json</code>:</p>
+
+<pre><code>npm install pinky --save
+</code></pre>
+
+<p>Next, require Pinky:</p>
+
+<div class="highlight"><pre><span class="kr">const</span> <span class="nx">pinky</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'pinky'</span><span class="p">);</span>
+</pre></div>
+
+<p>Then, use promises in your code:</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">pinky</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pinky</span><span class="p">();</span>
+<span class="nx">pinky</span><span class="p">.</span><span class="nx">promise</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Hello '</span><span class="o">+</span><span class="nx">value</span><span class="p">);</span> <span class="p">});</span>
+<span class="nx">pinky</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="s1">'world'</span><span class="p">);</span>
+</pre></div>
+
+<h2>Browser</h2>
+
+<p>First, include <a href="https://raw.github.com/lazd/Pinky/master/pinky.js"><code>pinky.js</code></a> on your page:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"pinky.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<p>Then, use it in your code:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;script&gt;</span>
+    <span class="kd">var</span> <span class="nx">pinky</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pinky</span><span class="p">();</span>
+    <span class="nx">pinky</span><span class="p">.</span><span class="nx">promise</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="s1">'Hello '</span><span class="o">+</span><span class="nx">value</span><span class="p">);</span> <span class="p">});</span>
+    <span class="nx">pinky</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="s1">'world'</span><span class="p">);</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+<h1>Examples</h1>
+
+<p>Examples for NodeJS and the browser are available in the <code>examples/</code> folder.</p>
+
+<p>Some of the examples located in <code>examples/browser/</code> fetch files with XMLHttpRequest, and most browsers prevent local files from being fetched in this way. There are a <a href="https://github.com/mrdoob/three.js/wiki/How-to-run-things-locally">number of different ways</a> to run examples locally, the most straightforward of which is to run <code>python -m SimpleHTTPServer</code> or <code>python -m http.server</code> and navigate to <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a>.</p>
+
+<h3>A complete example: fetching a value and handling errors</h3>
+
+<p>The example below simulates an asynchronous fetch of a random value with error handling and validation.</p>
+
+<p>This example has the following possible outcomes:</p>
+
+<ol>
+<li>
+<strong>Fulfilled</strong>: The fetched value is valid.</li>
+<li>
+<strong>Rejected</strong>: The fetch timed out and the generated backup value is invalid.</li>
+<li>
+<strong>Fulfilled</strong>: The fetch timed out or the fetched value is invalid, but the generated value is valid.</li>
+<li>
+<strong>Rejected</strong>: The fetch timed out or the fetched value is invalid, and generated value is invalid.</li>
+</ol><h3>fetchRandom(): a function that returns a promise</h3>
+
+<p>The <code>fetchRandom()</code> function simulates an asynchronous fetch and returns a promise that:</p>
+
+<ul>
+<li>Will be rejected if the "request" times out</li>
+<li>Will be fulfilled with the "response" if it comes back in time</li>
+</ul><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm">    Simulate fetching a random number from a remote source</span>
+<span class="cm">    Time out if the pretend remote source responds too slowly</span>
+<span class="cm">*/</span>
+<span class="kd">function</span> <span class="nx">fetchRandom</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Create a Pinky instance</span>
+    <span class="kd">var</span> <span class="nx">pinky</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pinky</span><span class="p">();</span>
+
+    <span class="c1">// Let's pretend we're fetching the random number from a remote source</span>
+    <span class="c1">// Randomly choose a "response time" between 0 and 100 milliseconds</span>
+    <span class="kd">var</span> <span class="nx">responseTime</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">;</span>
+
+    <span class="c1">// We'll timeout if the source takes too long and reject the promise</span>
+    <span class="kd">var</span> <span class="nx">timeoutTime</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">timeout</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">pinky</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Request timed out'</span><span class="p">));</span>
+    <span class="p">},</span> <span class="nx">timeoutTime</span><span class="p">);</span>
+
+    <span class="c1">// Simulate an asynchronous fetch using setTimeout</span>
+    <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// The response came back in time, clear our timeout</span>
+        <span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">timeout</span><span class="p">);</span>
+
+        <span class="c1">// Fulfill the promise with a random number when our pretend source responds</span>
+        <span class="nx">pinky</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">());</span>
+    <span class="p">},</span> <span class="nx">responseTime</span><span class="p">);</span>
+
+    <span class="c1">// Return the promise, which has a single method: then()</span>
+    <span class="k">return</span> <span class="nx">pinky</span><span class="p">.</span><span class="nx">promise</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>How to <em>then()</em>: using the promise returned by fetchRandom()</h3>
+
+<p><code>fetchRandom()</code> is called and 3 chained <code>then()</code> calls are made, each of which returns a new promise:</p>
+
+<ol>
+<li>With the first call to <code>then()</code> (on the promise returned by <code>fetchRandom()</code>), we'll pass the fulfillment value on if it's "valid" (not greater than 0.5), or let the timeout exception bubble to the next promise's onRejected handler.</li>
+<li>With the second <code>then()</code> call (on the promise returned by the first <code>then()</code> call), we'll let the fulfillment value bubble to the next promise's onFulfilled handler, or we'll handle invalid value exception by attempting to generate a valid value locally, returning it if we're successful, or throwing another exception if we're not.</li>
+<li>With the third <code>then()</code> call (on the promise returned by the second <code>then()</code> call), we'll print the fulfillment value and its source, or we'll print an error indicating we were unable to get a valid value.</li>
+</ol><div class="highlight"><pre><span class="c1">// A value is "valid" if it is not greater than 0.5</span>
+<span class="kd">function</span> <span class="nx">isValid</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="nx">value</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">);</span> <span class="p">}</span>
+
+<span class="c1">// Call our asynchronous random number fetcher</span>
+<span class="nx">fetchRandom</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// In this onFulfilled handler, if the value is valid, fulfill the next promise by returning it</span>
+        <span class="c1">// Or, if the value isn't valid, we'll reject the next promise by throwing an error</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isValid</span><span class="p">(</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
+            <span class="c1">// Reject the next promise by throwing because the random number is too big</span>
+            <span class="kd">var</span> <span class="nx">reason</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Fetched value is invalid'</span><span class="p">);</span>
+            <span class="nx">reason</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="nx">reason</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Fulfill the next promise by returning if the value is small enough</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="nx">method</span><span class="o">:</span> <span class="s1">'fetched'</span><span class="p">,</span>
+            <span class="nx">value</span><span class="o">:</span> <span class="nx">value</span>
+        <span class="p">};</span>
+    <span class="p">},</span>
+    <span class="kc">null</span> <span class="c1">// Let the rejection reason bubble to the next promise's onRejected handler</span>
+<span class="p">)</span>
+<span class="p">.</span><span class="nx">then</span><span class="p">(</span>
+    <span class="kc">null</span><span class="p">,</span> <span class="c1">// Let the fulfillment value bubble to the next promise's onFulfilled handler</span>
+
+    <span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// In this onRejected handler, if we return a value, the next promise will be fulfilled</span>
+        <span class="c1">// Or, if we throw/re-throw, the next promise will be rejected</span>
+
+        <span class="c1">// Fall back to generating a random number locally</span>
+        <span class="kd">var</span> <span class="nx">newValue</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">isValid</span><span class="p">(</span><span class="nx">newValue</span><span class="p">))</span> <span class="p">{</span>
+            <span class="c1">// Fulfill the next promise if our locally generated value is valid</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="nx">method</span><span class="o">:</span> <span class="s1">'generated'</span><span class="p">,</span> 
+                <span class="nx">value</span><span class="o">:</span> <span class="nx">newValue</span>
+            <span class="p">};</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Throw a new error, including the message from the previously thrown error</span>
+        <span class="kd">var</span> <span class="nx">newReason</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">reason</span><span class="p">.</span><span class="nx">message</span><span class="o">+</span><span class="s1">' and generated value is invalid'</span><span class="p">);</span>
+        <span class="nx">newReason</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nx">fetched</span><span class="o">:</span> <span class="nx">reason</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span>
+            <span class="nx">generated</span><span class="o">:</span> <span class="nx">newValue</span>
+        <span class="p">};</span>
+        <span class="k">throw</span> <span class="nx">newReason</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="p">.</span><span class="nx">then</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// In this onFulfilled handler, we'll dump the value and how we got it</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Fulfilled: '</span><span class="o">+</span><span class="nx">result</span><span class="p">.</span><span class="nx">method</span><span class="o">+</span><span class="s1">' value is valid: '</span><span class="o">+</span><span class="nx">result</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="s1">'\n'</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// In this onRejected handler, we'll dump the reason the operation failed</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'Rejected: '</span><span class="o">+</span><span class="nx">reason</span><span class="p">,</span> <span class="nx">reason</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="s1">'\n'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+</pre></div>
+
+<h1>Testing</h1>
+
+<p>Execute the following commands to run the <a href="https://github.com/promises-aplus/promises-tests">Promises/A+ test suite</a>:</p>
+
+<pre><code>npm install
+npm test
+</code></pre>
+
+<h1>License</h1>
+
+<p><a href="https://github.com/lazd/Pinky/blob/master/LICENSE.md">BSD license</a>, Copyright © 2013 Lawrence Davis</p>
+        </section>
+
+        <footer>
+          Pinky is maintained by <a href="https://github.com/lazd">lazd</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+                  <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-37564953-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+      </div>
+    </div>
+  </body>
+</html>

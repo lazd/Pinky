@@ -1,6 +1,6 @@
 # Pinky
 
-<img src="http://70.166.17.76/~lazdnet/pinky_logo_small.png" align="right" alt="Pinky logo">
+<img src="//lazd.github.com/Pinky/images/pinky_logo_small.png" align="right" alt="Pinky logo">
 
 Pinky is an extremely tiny [Promises/A+][A+ spec] implementation that passes the [Promises/A+ test suite][A+ tests].
 
@@ -41,7 +41,7 @@ The `pinky.promise` property is a "thenable" object that should be returned by f
 Pinky can be used both on the server and the client.
 
 
-## NodeJS
+## Node.js
 
 First, install the Pinky module using `npm`. Optionally use `--save` to save Pinky as a dependency in your `package.json`:
 
@@ -85,7 +85,7 @@ Then, use it in your code:
 
 # Examples
 
-Examples for NodeJS and the browser are available in the `examples/` folder.
+Examples for Node.js and the browser are available in the `examples/` folder.
 
 Some of the examples located in `examples/browser/` fetch files with XMLHttpRequest, and most browsers prevent local files from being fetched in this way. There are a [number of different ways][Run examples locally] to run examples locally, the most straightforward of which is to run `python -m SimpleHTTPServer` or `python -m http.server` and navigate to http://127.0.0.1:8000.
 

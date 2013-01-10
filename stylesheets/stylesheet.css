@@ -103,8 +103,12 @@ header img {
 }
 
 #downloads {
-	text-align: center;
 	margin-bottom: 40px;
+}
+
+.buttonGroup {
+	text-align: center;
+	margin: 20px auto;
 }
 
 a.button {

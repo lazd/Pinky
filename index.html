@@ -131,34 +131,34 @@
 <li>Will be rejected if the "request" times out</li>
 <li>Will be fulfilled with the "response" if it comes back in time</li>
 </ul><div class="highlight"><pre><span class="cm">/**</span>
-<span class="cm">		 Simulate fetching a random number from a remote source</span>
-<span class="cm">		 Time out if the pretend remote source responds too slowly</span>
+<span class="cm">    Simulate fetching a random number from a remote source</span>
+<span class="cm">    Time out if the pretend remote source responds too slowly</span>
 <span class="cm">*/</span>
 <span class="kd">function</span> <span class="nx">fetchRandom</span><span class="p">()</span> <span class="p">{</span>
-		<span class="c1">// Create a Pinky instance</span>
-		<span class="kd">var</span> <span class="nx">pinky</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pinky</span><span class="p">();</span>
+    <span class="c1">// Create a Pinky instance</span>
+    <span class="kd">var</span> <span class="nx">pinky</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pinky</span><span class="p">();</span>
 
-		<span class="c1">// Let's pretend we're fetching the random number from a remote source</span>
-		<span class="c1">// Randomly choose a "response time" between 0 and 100 milliseconds</span>
-		<span class="kd">var</span> <span class="nx">responseTime</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">;</span>
+    <span class="c1">// Let's pretend we're fetching the random number from a remote source</span>
+    <span class="c1">// Randomly choose a "response time" between 0 and 100 milliseconds</span>
+    <span class="kd">var</span> <span class="nx">responseTime</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">;</span>
 
-		<span class="c1">// We'll timeout if the source takes too long and reject the promise</span>
-		<span class="kd">var</span> <span class="nx">timeoutTime</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
-		<span class="kd">var</span> <span class="nx">timeout</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-				<span class="nx">pinky</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Request timed out'</span><span class="p">));</span>
-		<span class="p">},</span> <span class="nx">timeoutTime</span><span class="p">);</span>
+    <span class="c1">// We'll timeout if the source takes too long and reject the promise</span>
+    <span class="kd">var</span> <span class="nx">timeoutTime</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">timeout</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">pinky</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Request timed out'</span><span class="p">));</span>
+    <span class="p">},</span> <span class="nx">timeoutTime</span><span class="p">);</span>
 
-		<span class="c1">// Simulate an asynchronous fetch using setTimeout</span>
-		<span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-				<span class="c1">// The response came back in time, clear our timeout</span>
-				<span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">timeout</span><span class="p">);</span>
+    <span class="c1">// Simulate an asynchronous fetch using setTimeout</span>
+    <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// The response came back in time, clear our timeout</span>
+        <span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">timeout</span><span class="p">);</span>
 
-				<span class="c1">// Fulfill the promise with a random number when our pretend source responds</span>
-				<span class="nx">pinky</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">());</span>
-		<span class="p">},</span> <span class="nx">responseTime</span><span class="p">);</span>
+        <span class="c1">// Fulfill the promise with a random number when our pretend source responds</span>
+        <span class="nx">pinky</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">());</span>
+    <span class="p">},</span> <span class="nx">responseTime</span><span class="p">);</span>
 
-		<span class="c1">// Return the promise, which has a single method: then()</span>
-		<span class="k">return</span> <span class="nx">pinky</span><span class="p">.</span><span class="nx">promise</span><span class="p">;</span>
+    <span class="c1">// Return the promise, which has a single method: then()</span>
+    <span class="k">return</span> <span class="nx">pinky</span><span class="p">.</span><span class="nx">promise</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 
@@ -175,57 +175,57 @@
 
 <span class="c1">// Call our asynchronous random number fetcher</span>
 <span class="nx">fetchRandom</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span>
-		<span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-				<span class="c1">// In this onFulfilled handler, if the value is valid, fulfill the next promise by returning it</span>
-				<span class="c1">// Or, if the value isn't valid, we'll reject the next promise by throwing an error</span>
-				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isValid</span><span class="p">(</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
-						<span class="c1">// Reject the next promise by throwing because the random number is too big</span>
-						<span class="kd">var</span> <span class="nx">reason</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Fetched value is invalid'</span><span class="p">);</span>
-						<span class="nx">reason</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
-						<span class="k">throw</span> <span class="nx">reason</span><span class="p">;</span>
-				<span class="p">}</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// In this onFulfilled handler, if the value is valid, fulfill the next promise by returning it</span>
+        <span class="c1">// Or, if the value isn't valid, we'll reject the next promise by throwing an error</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isValid</span><span class="p">(</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
+            <span class="c1">// Reject the next promise by throwing because the random number is too big</span>
+            <span class="kd">var</span> <span class="nx">reason</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Fetched value is invalid'</span><span class="p">);</span>
+            <span class="nx">reason</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="nx">reason</span><span class="p">;</span>
+        <span class="p">}</span>
 
-				<span class="c1">// Fulfill the next promise by returning if the value is small enough</span>
-				<span class="k">return</span> <span class="p">{</span>
-						<span class="nx">method</span><span class="o">:</span> <span class="s1">'fetched'</span><span class="p">,</span>
-						<span class="nx">value</span><span class="o">:</span> <span class="nx">value</span>
-				<span class="p">};</span>
-		<span class="p">},</span>
-		<span class="kc">null</span> <span class="c1">// Let the rejection reason bubble to the next promise's onRejected handler</span>
+        <span class="c1">// Fulfill the next promise by returning if the value is small enough</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="nx">method</span><span class="o">:</span> <span class="s1">'fetched'</span><span class="p">,</span>
+            <span class="nx">value</span><span class="o">:</span> <span class="nx">value</span>
+        <span class="p">};</span>
+    <span class="p">},</span>
+    <span class="kc">null</span> <span class="c1">// Let the rejection reason bubble to the next promise's onRejected handler</span>
 <span class="p">)</span>
 <span class="p">.</span><span class="nx">then</span><span class="p">(</span>
-		<span class="kc">null</span><span class="p">,</span> <span class="c1">// Let the fulfillment value bubble to the next promise's onFulfilled handler</span>
+    <span class="kc">null</span><span class="p">,</span> <span class="c1">// Let the fulfillment value bubble to the next promise's onFulfilled handler</span>
 
-		<span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span>
-				<span class="c1">// In this onRejected handler, if we return a value, the next promise will be fulfilled</span>
-				<span class="c1">// Or, if we throw/re-throw, the next promise will be rejected</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// In this onRejected handler, if we return a value, the next promise will be fulfilled</span>
+        <span class="c1">// Or, if we throw/re-throw, the next promise will be rejected</span>
 
-				<span class="c1">// Fall back to generating a random number locally</span>
-				<span class="kd">var</span> <span class="nx">newValue</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
-				<span class="k">if</span> <span class="p">(</span><span class="nx">isValid</span><span class="p">(</span><span class="nx">newValue</span><span class="p">))</span> <span class="p">{</span>
-						<span class="c1">// Fulfill the next promise if our locally generated value is valid</span>
-						<span class="k">return</span> <span class="p">{</span>
-								<span class="nx">method</span><span class="o">:</span> <span class="s1">'generated'</span><span class="p">,</span> 
-								<span class="nx">value</span><span class="o">:</span> <span class="nx">newValue</span>
-						<span class="p">};</span>
-				<span class="p">}</span>
+        <span class="c1">// Fall back to generating a random number locally</span>
+        <span class="kd">var</span> <span class="nx">newValue</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">isValid</span><span class="p">(</span><span class="nx">newValue</span><span class="p">))</span> <span class="p">{</span>
+            <span class="c1">// Fulfill the next promise if our locally generated value is valid</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="nx">method</span><span class="o">:</span> <span class="s1">'generated'</span><span class="p">,</span> 
+                <span class="nx">value</span><span class="o">:</span> <span class="nx">newValue</span>
+            <span class="p">};</span>
+        <span class="p">}</span>
 
-				<span class="c1">// Throw a new error, including the message from the previously thrown error</span>
-				<span class="kd">var</span> <span class="nx">newReason</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">reason</span><span class="p">.</span><span class="nx">message</span><span class="o">+</span><span class="s1">' and generated value is invalid'</span><span class="p">);</span>
-				<span class="nx">newReason</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="p">{</span>
-						<span class="nx">fetched</span><span class="o">:</span> <span class="nx">reason</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span>
-						<span class="nx">generated</span><span class="o">:</span> <span class="nx">newValue</span>
-				<span class="p">};</span>
-				<span class="k">throw</span> <span class="nx">newReason</span><span class="p">;</span>
-		<span class="p">}</span>
+        <span class="c1">// Throw a new error, including the message from the previously thrown error</span>
+        <span class="kd">var</span> <span class="nx">newReason</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">reason</span><span class="p">.</span><span class="nx">message</span><span class="o">+</span><span class="s1">' and generated value is invalid'</span><span class="p">);</span>
+        <span class="nx">newReason</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nx">fetched</span><span class="o">:</span> <span class="nx">reason</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span>
+            <span class="nx">generated</span><span class="o">:</span> <span class="nx">newValue</span>
+        <span class="p">};</span>
+        <span class="k">throw</span> <span class="nx">newReason</span><span class="p">;</span>
+    <span class="p">}</span>
 <span class="p">)</span>
 <span class="p">.</span><span class="nx">then</span><span class="p">(</span>
-		<span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// In this onFulfilled handler, we'll dump the value and how we got it</span>
-				<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Fulfilled: '</span><span class="o">+</span><span class="nx">result</span><span class="p">.</span><span class="nx">method</span><span class="o">+</span><span class="s1">' value is valid: '</span><span class="o">+</span><span class="nx">result</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="s1">'\n'</span><span class="p">);</span>
-		<span class="p">},</span>
-		<span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// In this onRejected handler, we'll dump the reason the operation failed</span>
-				<span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'Rejected: '</span><span class="o">+</span><span class="nx">reason</span><span class="p">,</span> <span class="nx">reason</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="s1">'\n'</span><span class="p">);</span>
-		<span class="p">}</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// In this onFulfilled handler, we'll dump the value and how we got it</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Fulfilled: '</span><span class="o">+</span><span class="nx">result</span><span class="p">.</span><span class="nx">method</span><span class="o">+</span><span class="s1">' value is valid: '</span><span class="o">+</span><span class="nx">result</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="s1">'\n'</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// In this onRejected handler, we'll dump the reason the operation failed</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'Rejected: '</span><span class="o">+</span><span class="nx">reason</span><span class="p">,</span> <span class="nx">reason</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="s1">'\n'</span><span class="p">);</span>
+    <span class="p">}</span>
 <span class="p">);</span>
 </pre></div>
 

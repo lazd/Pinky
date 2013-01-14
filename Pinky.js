@@ -9,13 +9,17 @@ var Pinky = function() {
 	this.executeOnRejectedCallback = this.executeOnRejectedCallback.bind(this);
 	this.fulfill = this.fulfill.bind(this);
 	this.reject = this.reject.bind(this);
-	this.then = this.then.bind(this);
+	this.done = this.done.bind(this);
+	var then = this.then = this.then.bind(this);
 	
-	// Create a thenable property that only has this.then
-	// We'll return this inside of then() in place of the Pinky instance
-	// This can also be used by implementations that create Pinky instances
-	this.thenable = this.promise = {
-		then: this.then
+	// Create a thenable property, this.promise, that only has then() and done()
+	// This should be returned by functions that create and use Pinky instances
+	this.promise = {
+		then: function(onFulfilled, onRejected) {
+			// Return the thenable property of the Pinky instance returned by then()
+			return then(onFulfilled, onRejected).promise;
+		},
+		done: this.done
 	};
 };
 
@@ -118,13 +122,17 @@ Pinky.prototype.fulfill = function(fulfilledValue) {
 	// 3.1.2.2: When in fulfilled, a promise must have a value, which must not change.
 	this.value = fulfilledValue;
 
-	// 3.2.2.1 Call each onFulfilled after promise is fulfilled, with promise’s fulfillment value as its first argument.
-	this.executeCallbacks(true);
+	// done() support:
+	// A promise that isDone should _never_ have callbacks to execute
+	if (!this.isDone) {
+		// 3.2.2.1 Call each onFulfilled after promise is fulfilled, with promise’s fulfillment value as its first argument.
+		this.executeCallbacks(true);
+	}
 	
 	return this;
 };
 
-Pinky.prototype.reject =function(reasonRejected) {
+Pinky.prototype.reject = function(reasonRejected) {
 	// 3.1.1.1: When in pending, a promise may transition to the rejected state.
 	// 3.1.2.1: When in fulfilled, a promise must not transition to any other state.
 	if (this.state !== this.states.PENDING) return;
@@ -134,15 +142,27 @@ Pinky.prototype.reject =function(reasonRejected) {
 	// 3.1.3.2: When in rejected, a promise must have a reason, which must not change.
 	this.reason = reasonRejected;
 
-	// 3.2.3.1 Call each onRejected after promise is rejected, with promise’s rejection reason as its first argument.
-	this.executeCallbacks(false);
+	// done() support:
+	// A promise that isDone should always throw when rejected and should _never_ have callbacks to execute
+	if (this.isDone) {
+		throw this.reason;
+	}
+	else {
+		// 3.2.3.1 Call each onRejected after promise is rejected, with promise’s rejection reason as its first argument.
+		this.executeCallbacks(false);
+	}
 	
 	return this;
 };
 
-Pinky.prototype.then = function(onFulfilled, onRejected) {
+Pinky.prototype.then = function(onFulfilled, onRejected, isDone) {
 	// 3.2.6: Create a new promise
 	var promise2 = new Pinky();
+	
+	// done() support:
+	// Set isDone on the created promise
+	if (isDone)
+		promise2.isDone = true;
 	
 	var executeCallback = this.executeCallback;
 	var value = this.value;
@@ -183,7 +203,21 @@ Pinky.prototype.then = function(onFulfilled, onRejected) {
 	};
 
 	// 3.2.6: Return a promise
-	return promise2.thenable;
+	// Return an actual Pinky instance.
+	// Implementors should return the promise property, not the Pinky instance itself
+	return promise2;
 };
+
+// done() support:
+// A test implementation of https://github.com/promises-aplus/unhandled-rejections-spec/issues/5
+Pinky.prototype.done = function(onFulfilled, onRejected) {
+	// Done should always create a new promise, do so via then()
+	// The new promise should be considered done, so pass true as the 3rd argument
+	// It will be rejected when this promise is rejected
+	var promise2 = this.then(onFulfilled, onRejected, true);
+	
+	// done() should return undefined, so no return statement is needed
+};
+
 
 if (typeof module !== 'undefined') module.exports = Pinky;

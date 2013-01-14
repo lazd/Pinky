@@ -28,12 +28,16 @@ When passed a reason, the promise will be rejected. All onRejected callbacks wil
 
 Used to add onFulfilled and onRejected callbacks to the promise. The same method is provided as `pinky.promise.then(...)`.
 
+**pinky.done(** *onFulfilled*, *onRejected* **)**
+
+Cap off a promise such that any unhandled exceptions will be thrown, causing a crash.
+
 
 ## Properties
 
 **pinky.promise**
 
-The `pinky.promise` property is a "thenable" object that should be returned by functions that use Pinky. Instead of returning the Pinky instance itself, which would allow callers to fulfill/reject the promise, your function should `return pinky.promise` -- an object that includes the one method a promise must have: `pinky.then(...)`.
+The `pinky.promise` property is a "thenable" object that should be returned by functions that use Pinky. Instead of returning the Pinky instance itself, which would allow callers to fulfill/reject the promise, your function should `return pinky.promise` -- an object that includes only the `pinky.then(...)` and `pinky.done(...)` methods.
 
 
 # Usage

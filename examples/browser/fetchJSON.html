@@ -112,25 +112,25 @@
 */
 function fetch(url) {
 	// Make a new promise
-	var promise = pinky.promise();
+	var pinky = new Pinky();
 
 	// Create a request
 	var request = new XMLHttpRequest();
-	request.open("GET", url, true);
+	request.open(&quot;GET&quot;, url, true);
 
 	// Handle successful requests
 	request.onload = function() {
 		if (request.status === 200 || request.status === 0) {
 			// Fulfill the promise with the fetched data
-			promise.fulfill(request.responseText);
+			pinky.fulfill(request.responseText);
 		}
 		else {
 			// Reject the promise if the status is not 200 (OK from server) or 0 (local files)
-			promise.reject(
-				'Fetch failed: '+
-				url+' was requested, '+
-				'but the server returned code '+request.status+' ('+request.statusText+') '+
-				'and responded with: \n\n'+request.responseText
+			pinky.reject(
+				&#x27;Fetch failed: &#x27;+
+				url+&#x27; was requested, &#x27;+
+				&#x27;but the server returned code &#x27;+request.status+&#x27; (&#x27;+request.statusText+&#x27;) &#x27;+
+				&#x27;and responded with: \n\n&#x27;+request.responseText
 			);
 		}
 	};
@@ -138,13 +138,13 @@ function fetch(url) {
 	// Handle failed requests
 	request.onerror = function() {
 		// Reject the promise if the request failed
-		promise.reject('Fetch failed: '+url+' could not be fetched');
+		pinky.reject(&#x27;Fetch failed: &#x27;+url+&#x27; could not be fetched&#x27;);
 	};
 
 	// Send the request
 	request.send();
 
-	return promise;
+	return pinky.promise;
 };
 </pre>
 		</li>
@@ -155,23 +155,23 @@ function fetch(url) {
 	A function that populates a element with the content of the body field of the JSON at the provided URL
 */
 function setContentFromJSON(id, url) {
-	fetch(url) // fetch() returns a promise, which we'll chain function calls to below
-
+	fetch(url) // fetch() returns a promise, which we&#x27;ll chain function calls to below
+	
 	.then( // add callbacks to the promise returned by fetch()
-		function(value) { // onFulfilled callback: executed when the response is returned
+		function(value) { // onFulfilled callback: called when the response is returned
 			return JSON.parse(value); // will throw an exception if JSON fails to parse
 		},
-		function(reason) { // onRejected callback: executed when the request fails
+		function(reason) { // onRejected callback: called when the request fails
 			document.getElementById(id).innerHTML = reason;
 		}
 	) // then() returns another promise
-
+	
 	.then( // add callbacks to the promise returned by the first call to then()
-		function(value) { // onFulfilled callback: executed when the JSON is parsed successfully
-			document.getElementById(id).innerHTML = 'JSON content: '+value.content;
-		},	
+		function(value) { // onFulfilled callback: called when the JSON is parsed successfully
+			document.getElementById(id).innerHTML = &#x27;JSON content: &#x27;+value.content;
+		},
 		function(reason) { // onRejected callback: called when the the first onFulfilled callback throws a JSON parse exception
-			document.getElementById(id).innerHTML = 'JSON parse failed: '+reason;
+			document.getElementById(id).innerHTML = &#x27;JSON parse failed: &#x27;+reason;
 		}
 	);
 }

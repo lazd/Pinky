@@ -53,17 +53,15 @@ function getContentFromJSON(path) {
 		function(data) { // onFulfilled callback: called when the contents of the file are available
 			return JSON.parse(data);
 		},
-		function(reason) { // onRejected callback: called if reading the file failed
-			console.error('Rejected: Could not read file: '+reason);
-		}
+		null // No onRejected callback; request failure errors will bubble
 	) // then() returns another promise
 
 	.then( // add callbacks to the promise returned by the first call to then()
 		function(obj) { // onFulfilled callback: called if the file contained valid JSON
-			console.log('Fulfilled: JSON content: '+obj.content);
+			console.log('Fulfilled: '+obj.content);
 		},
 		function(reason) { // onRejected callback: called if the file contained invalid JSON
-			console.error('Rejected: Failed to parse JSON: '+reason.message);
+			console.error('Rejected: '+reason.message);
 		}
 	);
 }
@@ -71,15 +69,19 @@ function getContentFromJSON(path) {
 console.log('Starting...');
 
 // Valid JSON
-console.log('Reading file with valid JSON...');
+console.log('\nReading file with valid JSON...');
 getContentFromJSON(__dirname+'/data/data.valid.json');
 
-// Invalid JSON
-console.log('Reading file with invalid JSON...');
-getContentFromJSON(__dirname+'/data/data.invalid.json');
+// Delay fetching so the console output lines up with the result
+setTimeout(function() {
+	// Invalid JSON
+	console.log('\nReading file with invalid JSON...');
+	getContentFromJSON(__dirname+'/data/data.invalid.json');
+}, 1000);
 
-// Non-existent file
-console.log('Reading non-existent file...');
-getContentFromJSON(__dirname+'/data/data.nonExistent.json');
-
-console.log('');
+// Delay fetching so the console output lines up with the result
+setTimeout(function() {
+	// Non-existent file
+	console.log('\nReading non-existent file...');
+	getContentFromJSON(__dirname+'/data/data.nonExistent.json');
+}, 2000);

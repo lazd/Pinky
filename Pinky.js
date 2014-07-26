@@ -23,7 +23,8 @@
 			if (x === promise.promise) {
 				promise.reject(new TypeError('Cannot fulfill a promise with itself as the value'));
 			}
-
+			
+			var then;
 			try {
 				// 2.3.3.1: Let then be x.then. 3.5
 				then = x.then;

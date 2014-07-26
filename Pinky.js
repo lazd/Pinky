@@ -1,4 +1,6 @@
 (function(global) {
+	'use strict';
+
 	var states = {
 		PENDING: -1,
 		REJECTED: 0,
@@ -120,7 +122,7 @@
 	};
 
 	function executeCallback(callback, promise, argument) {
-		var result, then;
+		var result;
 		try {
 			result = callback(argument);
 		}

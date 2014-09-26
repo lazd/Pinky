@@ -66,7 +66,7 @@ helloWorld().then(function(value) {
 
 ### Browser
 
-Just include [`pinky.js`][Pinky JS] on your page.
+Just include [`Pinky.js`][Pinky JS] on your page.
 
 
 ### AMD module

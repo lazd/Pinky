@@ -66,7 +66,7 @@ helloWorld().then(function(value) {
 
 ### Browser
 
-Just include [`pinky.js`][Pinky JS] on your page.
+Just include [`Pinky.js`][Pinky JS] on your page.
 
 
 ### AMD module
@@ -100,4 +100,4 @@ npm test
 [A+ spec]: http://promises-aplus.github.com/promises-spec/
 [A+ tests]: https://github.com/promises-aplus/promises-tests
 [BSD license]: https://github.com/lazd/Pinky/blob/master/LICENSE.md
-[Pinky JS]: https://raw.github.com/lazd/Pinky/master/pinky.js
+[Pinky JS]: https://raw.github.com/lazd/Pinky/master/Pinky.js
